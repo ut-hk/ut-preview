@@ -20,6 +20,7 @@
     "@angular/http": "5.0.0",
     "@angular/platform-browser": "5.0.0",
     "@angular/platform-browser-dynamic": "5.0.0",
+    "@ionic-native/network": "4.5.2",
     "@ionic-native/core": "4.3.2",
     "@ionic-native/splash-screen": "4.3.2",
     "@ionic-native/status-bar": "4.3.2",
@@ -27,14 +28,16 @@
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "rxjs": "5.5.2",
+    "rxjs-extra": "^0.1.1",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.18",
-    "ut-api-js-services": "git+https://bitbucket.org/diamond-queen/ut-api-js-services.git#2.8.0"
+    "ut-api-js-services": "git+https://bitbucket.org/diamond-queen/ut-api-js-services.git#2.10.1",
+    "zone.js": "0.8.18"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "3.1.0",
-    "@ionic/cli-plugin-ionic-angular": "1.4.1",
+    "@ionic/app-scripts": "3.1.6",
     "ionic": "3.19.0",
+    "tslint": "5.8.0",
+    "tslint-ionic-rules": "0.0.8",
     "typescript": "2.4.2"
   },
   "description": "An Ionic project"

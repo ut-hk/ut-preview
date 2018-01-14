@@ -115,8 +115,8 @@ IF EXIST "%DEPLOYMENT_TARGET%\temp\package.json" (
   echo Installing npm packages.
   call :ExecuteCmd !NPM_CMD! install
 
-  echo Building packages.
-  call :ExecuteCmd !NPM_CMD! run build --prod
+  echo Building project.
+  call :ExecuteCmd "%IONIC_CMD%" build --prod
 
   IF !ERRORLEVEL! NEQ 0 goto error
 

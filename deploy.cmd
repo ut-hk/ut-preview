@@ -122,10 +122,12 @@ IF EXIST "%DEPLOYMENT_TARGET%\temp\package.json" (
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-:: 4. Copy
-copy www/*.* ..
+:: 4. Copy built files
+cp -r www/* ..
+cp web.config ..
 
 popd
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end

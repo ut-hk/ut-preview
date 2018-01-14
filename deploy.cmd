@@ -58,8 +58,8 @@ IF NOT DEFINED IONIC_CMD (
   SET IONIC_CMD=%appdata%\npm\ionic.cmd
 )
 
-IF NOT DEFINED DEPLOYMENT_TEMP (
-  SET DEPLOYMENT_TEMP=%DEPLOYMENT_TARGET%\temp
+IF NOT DEFINED CUSTOM_DEPLOYMENT_TEMP (
+  SET CUSTOM_DEPLOYMENT_TEMP=%DEPLOYMENT_TARGET%\temp
 )
 
 goto Deployment
@@ -105,7 +105,7 @@ echo Handling node.js deployment.
 
 :: 1. KuduSync
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TEMP%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%CUSTOM_DEPLOYMENT_TEMP%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
@@ -113,10 +113,10 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 call :SelectNodeVersion
 
 :: Important to go to DEPLOYMENT_TEMP
-cd "%DEPLOYMENT_TEMP%"
+cd "%CUSTOM_DEPLOYMENT_TEMP%"
 
 :: 3. Install npm packages
-IF EXIST "%DEPLOYMENT_TEMP%\package.json" (
+IF EXIST "%CUSTOM_DEPLOYMENT_TEMP%\package.json" (
   echo Installing npm packages.
   call :ExecuteCmd !NPM_CMD! install
   IF !ERRORLEVEL! NEQ 0 goto error

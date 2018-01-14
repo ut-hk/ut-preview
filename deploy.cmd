@@ -47,6 +47,17 @@ IF NOT DEFINED KUDU_SYNC_CMD (
   :: Locally just running "kuduSync" would also work
   SET KUDU_SYNC_CMD=%appdata%\npm\kuduSync.cmd
 )
+
+IF NOT DEFINED IONIC_CMD (
+  :: Install ionic
+  echo Installing ionic
+  call npm install ionic -g --silent
+  IF !ERRORLEVEL! NEQ 0 goto error
+
+  :: Locally just running "kuduSync" would also work
+  SET IONIC_CMD=%appdata%\npm\ionic.cmd
+)
+
 goto Deployment
 
 :: Utility Functions
@@ -109,7 +120,7 @@ IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
 )
 
 :: 4. Build
-call :ExecuteCmd !NPM_CMD! run build --prod
+call :ExecuteCmd "%IONIC_CMD%" build --prod
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

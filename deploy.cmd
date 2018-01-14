@@ -58,6 +58,10 @@ IF NOT DEFINED IONIC_CMD (
   SET IONIC_CMD=%appdata%\npm\ionic.cmd
 )
 
+IF NOT DEFINED DEPLOYMENT_TEMP (
+  SET DEPLOYMENT_TEMP=%DEPLOYMENT_TARGET%\temp
+)
+
 goto Deployment
 
 :: Utility Functions
@@ -101,32 +105,33 @@ echo Handling node.js deployment.
 
 :: 1. KuduSync
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%\temp" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TEMP%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
 :: 2. Select node version
 call :SelectNodeVersion
 
-pushd "%DEPLOYMENT_TARGET%\temp"
+:: Important to go to DEPLOYMENT_TEMP
+cd "%DEPLOYMENT_TEMP%"
 
-:: 3. Install npm packages and build
-IF EXIST "%DEPLOYMENT_TARGET%\temp\package.json" (
-
+:: 3. Install npm packages
+IF EXIST "%DEPLOYMENT_TEMP%\package.json" (
   echo Installing npm packages.
   call :ExecuteCmd !NPM_CMD! install
-
-  echo Building project.
-  call :ExecuteCmd "%IONIC_CMD%" build --prod
-
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-:: 4. Copy built files
+:: 4. Build
+echo Building project.
+call :ExecuteCmd "%IONIC_CMD%" build --prod
+IF !ERRORLEVEL! NEQ 0 goto error
+
+:: 5. Copy built files
+echo Copying files.
 cp -r www/* ..
 cp web.config ..
-
-popd
+IF !ERRORLEVEL! NEQ 0 goto error
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

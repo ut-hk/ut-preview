@@ -11,7 +11,7 @@ import { ActivityPreviewDto, GetActivityPreviewInput, PreviewsApi } from 'ut-api
 
 @IonicPage({
   name: 'activity-invitation',
-  segment: 'activity-invitation'
+  segment: 'activity-invitation/:id/:token'
 })
 @Component({
   selector: 'page-activity-invitation',
@@ -27,9 +27,9 @@ export class ActivityInvitationPage {
               private previewApi: PreviewsApi) {
     this.getActivityPreviewInput = {
       activityId: {
-        id: '8dd76570-de1e-435d-5b3e-08d4e3dd125f'
+        id: this.navParams.data.id
       },
-      previewToken: '8dd76570-de1e-435d-5b3e-08d4e3dd125f'
+      previewToken: this.navParams.data.token
     };
   }
 

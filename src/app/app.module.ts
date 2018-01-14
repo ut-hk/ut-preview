@@ -22,6 +22,8 @@ import { IonicStorageModule } from '@ionic/storage';
     HttpModule,
     AbpHttpModule,
 
+    // IonicImageLoader,
+
     IonicModule.forRoot(MyApp, {
       preloadModules: true
     }),

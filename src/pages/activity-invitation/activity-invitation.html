@@ -6,23 +6,35 @@
 -->
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+    <!--<button ion-button menuToggle>-->
+      <!--<ion-icon name="menu"></ion-icon>-->
+    <!--</button>-->
     <ion-title>Activity Invitation Preview</ion-title>
+    <ion-buttons right>
+      <a *ngIf="activityPreview" ion-button clear href="{{downloadURL}}">Accept</a>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content>
 
+  <ion-card *ngIf="activityPreview === null">
+    <ion-card-header>
+      Message
+    </ion-card-header>
+    <ion-card-content>
+      Activity Invitations may not exist or invalid token.
+    </ion-card-content>
+  </ion-card>
+
   <!-- Cover Image -->
   <!--<div>-->
-    <!--<img *ngIf="imageDescriptions?.length > 0" src="{{imageDescriptions[0].content | internalImage : 'lg'}}">-->
+  <!--<img *ngIf="imageDescriptions?.length > 0" src="{{imageDescriptions[0].content | internalImage : 'lg'}}">-->
   <!--</div>-->
 
   <!-- Times and Name -->
-  <ion-grid>
+  <ion-grid *ngIf="this.activityPreview">
     <ion-row align-items-center>
       <ion-col col-3 class="cover">
         <div text-center class="month" *ngIf="activityPreview">{{activityPreview.startTime | date: 'MMM'}}</div>
@@ -39,7 +51,9 @@
 
     <ion-item>
       <ion-icon name="time" item-start></ion-icon>
-      <ion-label *ngIf="activityPreview.isAllDay">{{activityPreview.startTime | date: 'dd/MM/yyyy'}} - {{activityPreview.endTime | date: 'dd/MM/yyyy'}}</ion-label>
+      <ion-label *ngIf="activityPreview.isAllDay">{{activityPreview.startTime | date: 'dd/MM/yyyy'}} -
+        {{activityPreview.endTime | date: 'dd/MM/yyyy'}}
+      </ion-label>
       <ion-label *ngIf="!activityPreview.isAllDay">{{activityPreview.startTime | date: 'medium'}}</ion-label>
     </ion-item>
     <ion-item *ngIf="activityPreview.endTime && !activityPreview.isAllDay">
@@ -62,7 +76,8 @@
       <ion-icon name="person" *ngIf="activityPreview.participants.length < 2" item-start></ion-icon>
 
       <div *ngIf="activityPreview.participants.length >= 2">
-        <a>{{activityPreview.participants[0].userName}}</a> and {{activityPreview.participants.length - 1}} more are going.
+        <a>{{activityPreview.participants[0].userName}}</a> and {{activityPreview.participants.length - 1}} more are
+        going.
       </div>
 
       <div *ngIf="activityPreview.participants.length == 1">
@@ -73,7 +88,8 @@
     <!-- Descriptions -->
     <ion-list-header *ngIf="activityPreview.descriptions.length > 0">Descriptions</ion-list-header>
 
-    <ion-item *ngFor="let description of activityPreview.descriptions; trackBy: description?.id;" [ngSwitch]="description.type">
+    <ion-item *ngFor="let description of activityPreview.descriptions; trackBy: description?.id;"
+              [ngSwitch]="description.type">
 
       <!-- Text -->
       <ion-textarea *ngSwitchCase="0" [readonly]="true" [value]="description.content" autoResize></ion-textarea>

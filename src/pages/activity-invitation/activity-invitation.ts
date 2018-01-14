@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { ActivityPreviewDto, GetActivityPreviewInput, PreviewsApi } from 'ut-api-js-services';
+
 
 /**
  * Generated class for the ActivityInvitationPage page.
@@ -21,16 +22,21 @@ export class ActivityInvitationPage {
 
   private getActivityPreviewInput: GetActivityPreviewInput = undefined;
   private activityPreview: ActivityPreviewDto = undefined;
+  private iosURL = 'https://itunes.apple.com/hk/app/unitime/id1260366146?l=en&mt=8';
+  private androidURL = undefined;
+  private downloadURL = undefined;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private previewApi: PreviewsApi) {
+              private previewApi: PreviewsApi,
+              private platform: Platform) {
     this.getActivityPreviewInput = {
       activityId: {
         id: this.navParams.data.id
       },
       previewToken: this.navParams.data.token
     };
+    this.decidePlatfrom();
   }
 
   ionViewDidLoad() {
@@ -38,14 +44,28 @@ export class ActivityInvitationPage {
     console.log('ionViewDidLoad ActivityInvitationPage');
   }
 
+  public decidePlatfrom() {
+    if (this.platform.is('ios')) {
+      this.downloadURL = this.iosURL;
+    } else if (this.platform.is('android')) {
+      this.downloadURL = this.iosURL;
+    } else {
+      this.downloadURL = this.iosURL;
+    }
+  }
+
 
   private getActivityInvitation() {
     const getActivityPreviewSubscription = this.previewApi
       .getActivityPreview(this.getActivityPreviewInput)
+      .finally(() => {
+        getActivityPreviewSubscription.unsubscribe();
+      })
       .subscribe(output => {
         this.activityPreview = output.activityPreview;
 
-        getActivityPreviewSubscription.unsubscribe();
+      }, error => {
+        this.activityPreview = null;
       });
   }
 

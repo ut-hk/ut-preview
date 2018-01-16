@@ -7,9 +7,9 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Activity Invitation Preview</ion-title>
+    <ion-title>UniTime Preview</ion-title>
     <ion-buttons right>
-      <a *ngIf="activityPreviewDto" ion-button clear [href]="downloadUrl">Accept</a>
+      <a *ngIf="activityPreview" ion-button clear [href]="downloadUrl">Accept</a>
     </ion-buttons>
   </ion-navbar>
 
@@ -18,7 +18,7 @@
 
 <ion-content>
 
-  <ion-card *ngIf="activityPreviewDto === null">
+  <ion-card *ngIf="activityPreview === null">
     <ion-card-header>
       Message
     </ion-card-header>
@@ -27,85 +27,88 @@
     </ion-card-content>
   </ion-card>
 
-  <!--Cover Image -->
-  <div *ngIf="imageDescriptions?.length > 0">
-    <img [src]="imageDescriptions[0].content | internalImage : 'lg'">
-  </div>
+  <ng-container *ngIf="activityPreview">
 
-  <!-- Times and Name -->
-  <ion-grid *ngIf="activityPreviewDto">
-    <ion-row align-items-center>
-      <ion-col col-3 class="cover">
-        <div text-center class="month" *ngIf="activityPreviewDto">{{activityPreviewDto.startTime | date: 'MMM'}}</div>
-        <div text-center class="date" *ngIf="activityPreviewDto">{{activityPreviewDto.startTime | date: 'dd'}}</div>
-      </ion-col>
+    <!--Cover Image -->
+    <div *ngIf="imageDescriptions?.length > 0" text-center>
+      <img [src]="imageDescriptions[0].content | internalImage : 'lg'">
+    </div>
 
-      <ion-col>
-        <h1 *ngIf="activityPreviewDto" padding-left>{{activityPreviewDto.name}}</h1>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <!-- Times and Name -->
+    <ion-grid>
+      <ion-row align-items-center>
+        <ion-col col-3 class="cover">
+          <div text-center class="month" *ngIf="activityPreview">{{activityPreview.startTime | date: 'MMM'}}</div>
+          <div text-center class="date" *ngIf="activityPreview">{{activityPreview.startTime | date: 'dd'}}</div>
+        </ion-col>
 
-  <ion-list *ngIf="activityPreviewDto">
+        <ion-col>
+          <h1 *ngIf="activityPreview" padding-left>{{activityPreview.name}}</h1>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-    <!-- Time -->
-    <ion-item>
-      <ion-icon name="time" item-start></ion-icon>
-      <ion-label *ngIf="activityPreviewDto.isAllDay">{{activityPreviewDto.startTime | date: 'dd/MM/yyyy'}} - {{activityPreviewDto.endTime | date: 'dd/MM/yyyy'}}</ion-label>
-      <ion-label *ngIf="!activityPreviewDto.isAllDay">{{activityPreviewDto.startTime | date: 'medium'}}</ion-label>
-    </ion-item>
-    <ion-item *ngIf="activityPreviewDto.endTime && !activityPreviewDto.isAllDay">
-      <ion-icon item-start></ion-icon>
-      <ion-label>{{activityPreviewDto.endTime | date: 'medium'}}</ion-label>
-    </ion-item>
+    <ion-list>
 
-    <!-- Location -->
-    <ion-item *ngIf="activityPreviewDto.location && activityPreviewDto.location.name">
-      <ion-icon name="pin" item-start></ion-icon>
-      <ion-label>{{activityPreviewDto.location.name}}</ion-label>
-    </ion-item>
+      <!-- Time -->
+      <ion-item>
+        <ion-icon name="time" item-start></ion-icon>
+        <ion-label *ngIf="activityPreview.isAllDay">{{activityPreview.startTime | date: 'dd/MM/yyyy'}} - {{activityPreview.endTime | date: 'dd/MM/yyyy'}}</ion-label>
+        <ion-label *ngIf="!activityPreview.isAllDay">{{activityPreview.startTime | date: 'medium'}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="activityPreview.endTime && !activityPreview.isAllDay">
+        <ion-icon item-start></ion-icon>
+        <ion-label>{{activityPreview.endTime | date: 'medium'}}</ion-label>
+      </ion-item>
 
-    <!-- Tags -->
-    <ion-item *ngIf="activityPreviewDto.tags && activityPreviewDto.tags.length > 0">
-      <ion-icon name="closed-captioning-outline" item-start></ion-icon>
-      <span *ngFor="let tag of activityPreviewDto.tags; let last = last;">{{tag.text}}<span *ngIf="!last">, </span></span>
-    </ion-item>
+      <!-- Location -->
+      <ion-item *ngIf="activityPreview.location && activityPreview.location.name">
+        <ion-icon name="pin" item-start></ion-icon>
+        <ion-label>{{activityPreview.location.name}}</ion-label>
+      </ion-item>
 
-    <!-- Participants -->
-    <ion-item *ngIf="activityPreviewDto.participants?.length > 0">
-      <ion-icon name="people" *ngIf="activityPreviewDto.participants.length >= 2" item-start></ion-icon>
-      <ion-icon name="person" *ngIf="activityPreviewDto.participants.length < 2" item-start></ion-icon>
+      <!-- Tags -->
+      <ion-item *ngIf="activityPreview.tags && activityPreview.tags.length > 0">
+        <ion-icon name="closed-captioning-outline" item-start></ion-icon>
+        <span *ngFor="let tag of activityPreview.tags; let last = last;">{{tag.text}}<span *ngIf="!last">, </span></span>
+      </ion-item>
 
-      <div *ngIf="activityPreviewDto.participants.length >= 2">
-        <a>{{activityPreviewDto.participants[0].userName}}</a> and {{activityPreviewDto.participants.length - 1}} more are going.
-      </div>
+      <!-- Participants -->
+      <ion-item *ngIf="activityPreview.participants?.length > 0">
+        <ion-icon name="people" *ngIf="activityPreview.participants.length >= 2" item-start></ion-icon>
+        <ion-icon name="person" *ngIf="activityPreview.participants.length < 2" item-start></ion-icon>
 
-      <div *ngIf="activityPreviewDto.participants.length == 1">
-        <a>{{activityPreviewDto.participants[0].userName}}</a> is going.
-      </div>
-    </ion-item>
+        <div *ngIf="activityPreview.participants.length >= 2">
+          <a>{{activityPreview.participants[0].userName}}</a> and {{activityPreview.participants.length - 1}} more are going.
+        </div>
 
-    <!-- Descriptions -->
-    <ion-list-header *ngIf="activityPreviewDto.descriptions.length > 0">Descriptions</ion-list-header>
+        <div *ngIf="activityPreview.participants.length == 1">
+          <a>{{activityPreview.participants[0].userName}}</a> is going.
+        </div>
+      </ion-item>
 
-    <ion-item *ngFor="let description of activityPreviewDto.descriptions;" [ngSwitch]="description.type">
+      <!-- Descriptions -->
+      <ion-list-header *ngIf="activityPreview.descriptions.length > 0">Descriptions</ion-list-header>
 
-      <!-- Text -->
-      <div *ngSwitchCase="0">{{description.content}}</div>
+      <ion-item *ngFor="let description of activityPreview.descriptions;" [ngSwitch]="description.type">
 
-      <!-- External Image -->
-      <div *ngSwitchCase="1" text-center>
-        <img [src]="description.content">
-      </div>
+        <!-- Text -->
+        <div *ngSwitchCase="0">{{description.content}}</div>
 
-      <!-- Internal Image -->
-      <div *ngSwitchCase="2" text-center>
-        <img [src]="description.content | internalImage : 'lg'">
-      </div>
+        <!-- External Image -->
+        <div *ngSwitchCase="1" text-center>
+          <img [src]="description.content">
+        </div>
 
-    </ion-item>
+        <!-- Internal Image -->
+        <div *ngSwitchCase="2" text-center>
+          <img [src]="description.content | internalImage : 'lg'">
+        </div>
 
-  </ion-list>
+      </ion-item>
 
+    </ion-list>
+
+  </ng-container>
 
 </ion-content>

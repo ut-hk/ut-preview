@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
-import { ActivityPreviewDto, DescriptionDto, GetActivityPreviewInput, PreviewsApi } from 'ut-api-js-services';
-import { DescriptionType } from "../../app/consts/enums";
+import { ActivityPreviewDto, DescriptionDto, GetActivityPreviewInput, PreviewApi } from 'ut-api-js-services';
+import { DescriptionType } from '../../app/consts/enums';
 
 
 /**
@@ -23,7 +23,7 @@ export class ActivityInvitationPage {
 
   public getActivityPreviewInput: GetActivityPreviewInput = undefined;
 
-  public activityPreviewDto: ActivityPreviewDto = undefined;
+  public activityPreview: ActivityPreviewDto = undefined;
   public imageDescriptions: DescriptionDto[];
 
   // TODO: Android url
@@ -33,21 +33,19 @@ export class ActivityInvitationPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private previewApi: PreviewsApi,
+              private previewApi: PreviewApi,
               private platform: Platform) {
     this.generateDownloadUrl();
   }
 
   ionViewDidLoad() {
     this.getActivityPreviewInput = {
-      activityId: {
-        id: this.navParams.get('id')
-      },
+      activityId: this.navParams.get('id'),
       previewToken: this.navParams.get('token')
     };
 
     if (
-      this.getActivityPreviewInput.activityId.id !== ':id' &&
+      this.getActivityPreviewInput.activityId !== ':id' &&
       this.getActivityPreviewInput.previewToken !== ':token') {
       this.getActivityInvitation();
     }
@@ -70,11 +68,11 @@ export class ActivityInvitationPage {
         getActivityPreviewSubscription.unsubscribe();
       })
       .subscribe(output => {
-        this.activityPreviewDto = output.activityPreview;
+        this.activityPreview = output.activityPreview;
 
-        this.imageDescriptions = this.activityPreviewDto.descriptions.filter(d => d.type === <number>DescriptionType.InternalImage);
+        this.imageDescriptions = this.activityPreview.descriptions.filter(d => d.type === <number>DescriptionType.InternalImage);
       }, error => {
-        this.activityPreviewDto = null;
+        this.activityPreview = null;
       });
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "ut-preview",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
@@ -12,14 +12,14 @@
     "ionic:serve": "ionic-app-scripts serve"
   },
   "dependencies": {
-    "@angular/common": "5.0.0",
-    "@angular/compiler": "5.0.0",
-    "@angular/compiler-cli": "5.0.0",
-    "@angular/core": "5.0.0",
-    "@angular/forms": "5.0.0",
-    "@angular/http": "5.0.0",
-    "@angular/platform-browser": "5.0.0",
-    "@angular/platform-browser-dynamic": "5.0.0",
+    "@angular/common": "5.0.5",
+    "@angular/compiler": "5.0.5",
+    "@angular/compiler-cli": "5.0.5",
+    "@angular/core": "5.0.5",
+    "@angular/forms": "5.0.5",
+    "@angular/http": "5.0.5",
+    "@angular/platform-browser": "5.0.5",
+    "@angular/platform-browser-dynamic": "5.0.5",
     "@ionic-native/core": "4.3.2",
     "@ionic-native/file": "4.5.2",
     "@ionic-native/file-transfer": "4.5.2",
@@ -32,7 +32,7 @@
     "rxjs": "5.5.2",
     "rxjs-extra": "^0.1.1",
     "sw-toolbox": "3.6.0",
-    "ut-api-js-services": "git+ssh://git@bitbucket.org:diamond-queen/ut-api-js-services.git#2.10.1",
+    "ut-api-js-services": "git+ssh://git@bitbucket.org:diamond-queen/ut-api-js-services.git#2.10.5",
     "zone.js": "0.8.18"
   },
   "devDependencies": {

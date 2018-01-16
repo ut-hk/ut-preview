@@ -32,7 +32,7 @@
     "rxjs": "5.5.2",
     "rxjs-extra": "^0.1.1",
     "sw-toolbox": "3.6.0",
-    "ut-api-js-services": "https://leoiii12@bitbucket.org/diamond-queen/ut-api-js-services.git#2.10.1",
+    "ut-api-js-services": "git+ssh://git@bitbucket.org:diamond-queen/ut-api-js-services.git#2.10.1",
     "zone.js": "0.8.18"
   },
   "devDependencies": {

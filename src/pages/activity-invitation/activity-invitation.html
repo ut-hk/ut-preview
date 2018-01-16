@@ -43,7 +43,7 @@
         </ion-col>
 
         <ion-col>
-          <h1 *ngIf="activityPreview" padding-left>{{activityPreview.name}}</h1>
+          <h1 padding-left>{{activityPreview.name}}</h1>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -69,25 +69,28 @@
 
       <!-- Tags -->
       <ion-item *ngIf="activityPreview.tags && activityPreview.tags.length > 0">
-        <ion-icon name="closed-captioning-outline" item-start></ion-icon>
+        <ion-icon ios="ios-closed-captioning-outline" md="md-closed-captioning" item-start></ion-icon>
         <span *ngFor="let tag of activityPreview.tags; let last = last;">{{tag.text}}<span *ngIf="!last">, </span></span>
       </ion-item>
 
       <!-- Participants -->
       <ion-item *ngIf="activityPreview.participants?.length > 0">
-        <ion-icon name="people" *ngIf="activityPreview.participants.length >= 2" item-start></ion-icon>
-        <ion-icon name="person" *ngIf="activityPreview.participants.length < 2" item-start></ion-icon>
+        <ion-icon name="people" *ngIf="activityPreview.numberOfParticipants >= 2" item-start></ion-icon>
+        <ion-icon name="person" *ngIf="activityPreview.numberOfParticipants < 2" item-start></ion-icon>
 
-        <div *ngIf="activityPreview.participants.length >= 2">
-          <a>{{activityPreview.participants[0].userName}}</a> and {{activityPreview.participants.length - 1}} more are going.
+        <div *ngIf="activityPreview.numberOfParticipants >= 2">
+          {{activityPreview.numberOfParticipants}} people are going.
         </div>
 
-        <div *ngIf="activityPreview.participants.length == 1">
-          <a>{{activityPreview.participants[0].userName}}</a> is going.
+        <div *ngIf="activityPreview.numberOfParticipants == 1">
+          Someone is going.
         </div>
       </ion-item>
 
-      <!-- Descriptions -->
+    </ion-list>
+
+    <!-- Descriptions -->
+    <ion-list>
       <ion-list-header *ngIf="activityPreview.descriptions.length > 0">Descriptions</ion-list-header>
 
       <ion-item *ngFor="let description of activityPreview.descriptions;" [ngSwitch]="description.type">
@@ -106,7 +109,6 @@
         </div>
 
       </ion-item>
-
     </ion-list>
 
   </ng-container>

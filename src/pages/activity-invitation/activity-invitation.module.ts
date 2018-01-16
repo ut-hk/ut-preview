@@ -9,7 +9,6 @@ import { PipesModule } from '../../pipes/pipes.module';
   ],
   imports: [
     PipesModule,
-    // IonicImageLoader,
     IonicPageModule.forChild(ActivityInvitationPage)
   ],
 })

@@ -74,7 +74,7 @@
       </ion-item>
 
       <!-- Participants -->
-      <ion-item *ngIf="activityPreview.participants?.length > 0">
+      <ion-item *ngIf="activityPreview.numberOfParticipants > 0">
         <ion-icon name="people" *ngIf="activityPreview.numberOfParticipants >= 2" item-start></ion-icon>
         <ion-icon name="person" *ngIf="activityPreview.numberOfParticipants < 2" item-start></ion-icon>
 

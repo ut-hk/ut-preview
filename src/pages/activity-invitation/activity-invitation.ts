@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
-import { ActivityPreviewDto, GetActivityPreviewInput, PreviewsApi } from 'ut-api-js-services';
+import { ActivityPreviewDto, DescriptionDto, GetActivityPreviewInput, PreviewsApi } from 'ut-api-js-services';
+import { DescriptionType } from "../../app/consts/enums";
 
 
 /**
@@ -20,40 +21,47 @@ import { ActivityPreviewDto, GetActivityPreviewInput, PreviewsApi } from 'ut-api
 })
 export class ActivityInvitationPage {
 
-  private getActivityPreviewInput: GetActivityPreviewInput = undefined;
-  private activityPreview: ActivityPreviewDto = undefined;
-  private iosURL = 'https://itunes.apple.com/hk/app/unitime/id1260366146?l=en&mt=8';
-  private androidURL = undefined;
-  private downloadURL = undefined;
+  public getActivityPreviewInput: GetActivityPreviewInput = undefined;
+
+  public activityPreviewDto: ActivityPreviewDto = undefined;
+  public imageDescriptions: DescriptionDto[];
+
+  // TODO: Android url
+  public downloadUrl = undefined;
+  private readonly iosUrl = 'https://itunes.apple.com/hk/app/unitime/id1260366146?l=en&mt=8';
+  private readonly androidUrl = 'https://itunes.apple.com/hk/app/unitime/id1260366146?l=en&mt=8';
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private previewApi: PreviewsApi,
               private platform: Platform) {
-    this.getActivityPreviewInput = {
-      activityId: {
-        id: this.navParams.data.id
-      },
-      previewToken: this.navParams.data.token
-    };
-    this.decidePlatfrom();
+    this.generateDownloadUrl();
   }
 
   ionViewDidLoad() {
-    this.getActivityInvitation();
-    console.log('ionViewDidLoad ActivityInvitationPage');
-  }
+    this.getActivityPreviewInput = {
+      activityId: {
+        id: this.navParams.get('id')
+      },
+      previewToken: this.navParams.get('token')
+    };
 
-  public decidePlatfrom() {
-    if (this.platform.is('ios')) {
-      this.downloadURL = this.iosURL;
-    } else if (this.platform.is('android')) {
-      this.downloadURL = this.iosURL;
-    } else {
-      this.downloadURL = this.iosURL;
+    if (
+      this.getActivityPreviewInput.activityId.id !== ':id' &&
+      this.getActivityPreviewInput.previewToken !== ':token') {
+      this.getActivityInvitation();
     }
   }
 
+  public generateDownloadUrl() {
+    if (this.platform.is('ios')) {
+      this.downloadUrl = this.iosUrl;
+    } else if (this.platform.is('android')) {
+      this.downloadUrl = this.androidUrl;
+    } else {
+      this.downloadUrl = this.iosUrl;
+    }
+  }
 
   private getActivityInvitation() {
     const getActivityPreviewSubscription = this.previewApi
@@ -62,12 +70,12 @@ export class ActivityInvitationPage {
         getActivityPreviewSubscription.unsubscribe();
       })
       .subscribe(output => {
-        this.activityPreview = output.activityPreview;
+        this.activityPreviewDto = output.activityPreview;
 
+        this.imageDescriptions = this.activityPreviewDto.descriptions.filter(d => d.type === <number>DescriptionType.InternalImage);
       }, error => {
-        this.activityPreview = null;
+        this.activityPreviewDto = null;
       });
   }
-
 
 }
